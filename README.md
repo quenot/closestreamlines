@@ -7,7 +7,7 @@ The tool builds closed streamlines if possible from pairs of forward and backwar
 
 It is assumed that the streamlines should loop on themselves or remain open, i.e., in principle they should not be spiraling. A sufficient (but not necessary) condition is that the divergence of the field is null, as it is for example for 2D flows of incompressible fluids or for magnetic fields in a symmetry plane.
 
-If the flow has streamlines that do not loop on themselves, like for instance in a slice of a vortex with out-of-plane components, the method will likely close the streamlines even if these should not be closed.
+If the flow has streamlines that are not supposed to loop on themselves, like for instance in a slice of a vortex with out-of-plane components, the method will likely close the streamlines even if these should not be closed.
 
 The quality of the result depends upon the quality of the integration. Both matplotlib's and pyvista's integrators are very good but they should be used with a sufficient resolution for optimal results. The integrators also have some control parameters that may need to be adjusted for the target applications.
 
