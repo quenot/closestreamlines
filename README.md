@@ -25,6 +25,8 @@ The three examples below illustrate how to use the tool for visualizing the stre
 
 `pyvista_magpylib_low_res.ipynb` : example with streamlines obtained with pyvista with integration at low resolution. The streamlines are distorted and not regularly spaced but this comes from the fact that the streamline integration is done at a low resolution and the method for closing the streamlines does not fail.
 
+You may try the `verbose=1` option to see some information about how the functioning of the method.
+
 ## To do: 
 Examples without magpylib dependency.
 
