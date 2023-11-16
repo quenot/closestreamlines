@@ -170,27 +170,35 @@ def get_pv_pairs(streamlines, seeds):
 # Extract raw line pairs associated to seeds from a matplotlib streamplot object
 def get_mpl_pairs(splt, seeds):
     segments = splt.lines.get_segments()
-    # Remove null segments
-    non_nulls = []
-    for i in range(len(segments)):
-        if not np.array_equal(segments[i][0], segments[i][1]):
-            non_nulls.append(segments[i])
-    segments = non_nulls
-    # Split into lines
-    breaks = []
-    for i in range(len(segments)-1):
-        if not np.array_equal(segments[i+1][0], segments[i][1]):
-            breaks.append(i+1)
-    lines_segments = [segments[:breaks[0]]]
-    for i in range(len(breaks)-1):
-        lines_segments.append(segments[breaks[i]:breaks[i+1]])
-    lines_segments.append(segments[breaks[-1]:])
-    lines = []
-    for line_segments in lines_segments:
-        line = [line_segments[0][0]]
-        for segment in line_segments:
-            line.append(segment[1])
-        lines.append(np.array(line))
+    if len(segments) == len(seeds): # Format in 3.8.0, list of lines as arrays of points
+        # Remove duplicate points
+        lines = []
+        for line_points in segments:
+            line = [point for i, point in enumerate(line_points) if i == 0 or not np.array_equal(point, line_points[i-1])]
+            lines.append(np.array(line))
+    else: # Format in matplotlib 3.7.2, all segments for all lines in a single list
+        # Remove null segments
+        non_nulls = []
+        for i in range(len(segments)):
+            if not np.array_equal(segments[i][0], segments[i][1]):
+                non_nulls.append(segments[i])
+        segments = non_nulls
+        # Split into lines
+        breaks = []
+        for i in range(len(segments)-1):
+            if not np.array_equal(segments[i+1][0], segments[i][1]):
+                breaks.append(i+1)
+        lines_segments = [segments[:breaks[0]]]
+        for i in range(len(breaks)-1):
+            lines_segments.append(segments[breaks[i]:breaks[i+1]])
+        lines_segments.append(segments[breaks[-1]:])
+        # Turn array of segments into array of points, line by line
+        lines = []
+        for line_segments in lines_segments:
+            line = [line_segments[0][0]]
+            for segment in line_segments:
+                line.append(segment[1])
+            lines.append(np.array(line))
     # Split lines into [forward, backward] pairs, assume lines goes downstream
     pairs = []
     for line, seed in zip(lines, seeds):
