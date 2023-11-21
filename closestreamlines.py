@@ -90,7 +90,9 @@ def close_loop(line, max_iter=50, verbose=0):
         center = np.sum(centers*np.expand_dims(lengths, axis=1), axis=0)/length
         # From center unit vectors
         nr, nrpoint = line-center, quasi_loop[-1]-center
-        nr, nrpoint = nr/np.linalg.norm(nr,axis=1, keepdims=True), nrpoint/np.linalg.norm(nrpoint)
+        nrnorm, nrpointnorm = np.linalg.norm(nr,axis=1, keepdims=True), np.linalg.norm(nrpoint)
+        nrnorm, nrpointnorm = np.where(nrnorm == 0, 1, nrnorm), 1 if nrpointnorm == 0 else 1
+        nr, nrpoint = nr/nrnorm, nrpoint/nrpointnorm
         # Drift correction factor
         dcf = drift/length/np.sum(normal*nrpoint)
         # Correct drift
