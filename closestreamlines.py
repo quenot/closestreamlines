@@ -145,7 +145,7 @@ def merge_or_close_pairs(pairs, max_iter=50, verbose=0):
             if verbose > 0:
                 print("Seed", i, end = " ")
             plines.append(merge_or_close_pair(pair, verbose=verbose))
-        else if verbose >= 0:
+        elif verbose >= 0:
             print("Seed", i, "p : forward or backward line is missing,", len(pair), "lines")
     return plines
 
