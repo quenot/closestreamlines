@@ -165,7 +165,7 @@ def get_pv_pairs(streamlines, seeds):
         pts = points[inds][:,:2]
         line_points.append(pts)
     # Assumes [forward, backward] order
-    pairs = [[line for line in line_points if np.array_equal(line[0], point[0:2])] for point in seeds.points]
+    pairs = [[line for line in line_points if np.array_equal(line[0], point[0:2].astype(np.float32))] for point in seeds.points]
     return pairs
 
 # For use with matplotlib
